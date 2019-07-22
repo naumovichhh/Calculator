@@ -72,7 +72,18 @@ function getResult() {
 	}
 }
 
+function resetAll() {
+	document.getElementById("textbox").value = "0";
+	calculator.reset();
+}
+
+function resetTimeout() {
+	clearTimeout(timeout);
+	timeout = setTimeout(resetAll, 50000);
+}
+
 var calculator = new Calculator();
+var timeout = setTimeout(resetAll, 50000);
 document.body.addEventListener("keypress", e => {
 	if (!isNaN(e.key)) {
 		writeDigit(e.key);
@@ -110,8 +121,7 @@ document.getElementById("dot").addEventListener("click", function() {
 	writeDot();
 });
 document.getElementById("C").addEventListener("click", function() {
-	document.getElementById("textbox").value = "0";
-	calculator.reset();
+	resetAll();
 });
 document.getElementById("CE").addEventListener("click", function() {
 	document.getElementById("textbox").value = "0";
@@ -132,3 +142,5 @@ document.getElementById("plusminus").addEventListener("click", function() {
 		if (textBox.value !== "0")
 			textBox.value = "-"+textBox.value;
 });
+document.body.addEventListener("click", resetTimeout);
+document.body.addEventListener("keydown", resetTimeout);
